@@ -1,0 +1,41 @@
+.link__wrapper:hover .link__text-wrapper,
+.link__wrapper:hover .link__arrow-wrapper{
+    background-color: #29364B;
+    transition: all 0.6s ease;
+}
+
+.link__text-wrapper,
+.link__arrow-wrapper{
+    transition: all 0.6s ease;
+}
+
+.button__wrapper--header:hover{
+    background-color: #CDD5E0;
+    transition: all 0.6s ease;
+}
+
+.button__wrapper--header{
+    transition: all 0.6s ease;
+}
+
+.button__wrapper--technology:hover{
+    background-color: #f8fafc;
+    transition: all 0.6s ease;
+}
+
+.button__wrapper--technology{
+    transition: all 0.6s ease;
+}
+
+.dots__dots-next:hover{
+    background-color: #ccffce;
+    transition: all 0.6s ease;
+}
+
+.dots__dots-next{
+    transition: all 0.6s ease;
+}
+
+.footer__link:hover{
+    text-decoration: underline;
+}
