@@ -36,7 +36,7 @@ export default function homePannel(){
             opacity: 0,
             duration: 0.5,
             ease: 'Quart.easeInOut'
-        }, 0.9)
+        }, 1.2)
 
         let offerColCenterTl = gsap.timeline({ paused: true, reversed: true })
         .to(offerColCenter, {
@@ -63,7 +63,7 @@ export default function homePannel(){
             opacity: 0,
             duration: 0.5,
             ease: 'Quart.easeInOut'
-        }, 0.9)
+        }, 1.2)
 
         let offerColRightTl = gsap.timeline({ paused: true, reversed: true })
         .to(offerColRight, {
@@ -90,7 +90,7 @@ export default function homePannel(){
             opacity: 0,
             duration: 0.5,
             ease: 'Quart.easeInOut'
-        }, 0.9)
+        }, 1.2)
 
         offerColCenter.addEventListener('click', () => {
                 offerColLeftTl.reverse()

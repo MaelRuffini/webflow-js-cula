@@ -2,7 +2,6 @@ import gsap from 'gsap'
 import Lenis from '@studio-freight/lenis'
 import * as dat from 'lil-gui'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
@@ -52,6 +51,18 @@ export default function webgl() {
       const loadingManager = new THREE.LoadingManager(
         // Loaded
         () => {
+
+          let loaderTl = gsap.timeline()
+          .to('.loader__wrapper', {
+            yPercent: -100,
+            duration: 1.2,
+            ease: 'Quart.easeInOut',
+          })
+          .to('.loader__wrapper', {
+            display: 'none',
+            duration: 0,
+          })
+
           tick()
           blenderCamera.aspect = sizes.width / sizes.height
           blenderCamera.updateProjectionMatrix()
@@ -66,7 +77,10 @@ export default function webgl() {
         },
 
         // Progress
-        (itemUrl, itemsLoaded, itemsTotal) => {}
+        (itemUrl, itemsLoaded, itemsTotal) => {
+          const progressRatio = itemsLoaded / itemsTotal
+          document.querySelector('.loader__percent').innerHTML = `${Math.trunc(progressRatio * 100)}%`
+        }
       )
 
       // Draco loader
@@ -94,9 +108,6 @@ export default function webgl() {
 
       scene.environment = environmentMap
 
-      const ambientLight = new THREE.AmbientLight('white', 0)
-      scene.add(ambientLight)
-
       const mainLight = new THREE.DirectionalLight('white', 1)
       mainLight.castShadow = true
       mainLight.shadow.mapSize.width = 2048
@@ -109,30 +120,35 @@ export default function webgl() {
       secondLight.shadow.mapSize.height = 2048
       secondLight.position.set(7.8, 1.6, -1.26)
 
-      // const sphereSize = 1;
-      // const pointLightHelper = new THREE.PointLightHelper(mainLight, 1)
+      const thirdLight = new THREE.PointLight('white', 5)
+      thirdLight.castShadow = true
+      thirdLight.shadow.mapSize.width = 2048
+      thirdLight.shadow.mapSize.height = 2048
+      thirdLight.position.set(9.7, 2.9, -9.6)
+
+      // const pointLightHelper = new THREE.PointLightHelper(thirdLight, 1)
       // scene.add(pointLightHelper)
 
       // gui
-      //   .add(mainLight.position, 'x')
+      //   .add(thirdLight.position, 'x')
       //   .name(' Main Light X')
       //   .min(-5)
       //   .max(15)
       //   .step(0.01)
       // gui
-      //   .add(mainLight.position, 'y')
+      //   .add(thirdLight.position, 'y')
       //   .name(' Main Light Y')
-      //   .min(-5)
+      //   .min(-15)
       //   .max(15)
       //   .step(0.01)
       // gui
-      //   .add(mainLight.position, 'z')
+      //   .add(thirdLight.position, 'z')
       //   .name(' Main Light Z')
-      //   .min(-5)
+      //   .min(-15)
       //   .max(15)
       //   .step(0.01)
       // gui
-      //   .add(mainLight, 'intensity')
+      //   .add(thirdLight, 'intensity')
       //   .name(' Main Intensity')
       //   .min(0)
       //   .max(5)
@@ -153,21 +169,29 @@ export default function webgl() {
 
       const waterMaterial = new THREE.MeshStandardMaterial({
         color: '#C2E9ED',
+        roughness: 0.3,
+        metalness: 0,
         envMap: environmentMap,
         envMapIntensity: envMapIntensity,
       })
       const fieldOneMaterial = new THREE.MeshStandardMaterial({
         color: '#D2E2D3',
+        roughness: 0.3,
+        metalness: 0,
         envMap: environmentMap,
         envMapIntensity: envMapIntensity,
       })
       const fieldTwoMaterial = new THREE.MeshStandardMaterial({
         color: '#F6F4DD',
+        roughness: 0.1,
+        metalness: 0,
         envMap: environmentMap,
         envMapIntensity: envMapIntensity,
       })
       const treeHeadMaterial = new THREE.MeshStandardMaterial({
         color: '#CBECCD',
+        roughness: 0.3,
+        metalness: 0,
         envMap: environmentMap,
         envMapIntensity: envMapIntensity,
       })
@@ -178,16 +202,22 @@ export default function webgl() {
       })
       const whiteMaterial = new THREE.MeshStandardMaterial({
         color: '#F9F9F9',
+        roughness: 0.3,
+        metalness: 0,
         envMap: environmentMap,
         envMapIntensity: envMapIntensity,
       })
       const woodRestMaterial = new THREE.MeshStandardMaterial({
         color: '#E1BDAE',
+        roughness: 0.3,
+        metalness: 0,
         envMap: environmentMap,
         envMapIntensity: envMapIntensity,
       })
       const blackMaterial = new THREE.MeshStandardMaterial({
         color: '#5C5C5C',
+        roughness: 0.3,
+        metalness: 0,
         envMap: environmentMap,
         envMapIntensity: envMapIntensity,
       })
@@ -201,7 +231,7 @@ export default function webgl() {
       let clouds
 
       gltfLoader.load(
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/653879787c29f62c81af67fc_export.glb.txt',
+        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/653debb3718cbd5c51d797c4_export.glb.txt',
         (gltf) => {
           mixer = new THREE.AnimationMixer(gltf.scene)
           const action = mixer.clipAction(gltf.animations[0])
@@ -287,11 +317,52 @@ export default function webgl() {
             woodRest,
             black,
             mainLight,
-            secondLight
+            secondLight,
+            thirdLight
           )
           scene.add(gltf.scene, modelGroup)
         }
       )
+
+      const dotMaterial = new THREE.MeshBasicMaterial({ color: "#57EEA6" })
+
+      const dotOneGeometry = new THREE.CircleGeometry(0.3, 32)
+      const dotOne = new THREE.Mesh(dotOneGeometry, dotMaterial)
+      dotOne.rotation.x = Math.PI / 2
+      
+      const dotTwoGeometry = new THREE.CircleGeometry(0.3, 32)
+      const dotTwo = new THREE.Mesh(dotTwoGeometry, dotMaterial)
+      dotTwo.rotation.x = Math.PI / 2
+
+      const dotThreeGeometry = new THREE.CircleGeometry(0.3, 32)
+      const dotThree = new THREE.Mesh(dotThreeGeometry, dotMaterial)
+      dotThree.rotation.x = Math.PI / 2
+
+      const dotFourGeometry = new THREE.CircleGeometry(0.3, 32)
+      const dotFour = new THREE.Mesh(dotFourGeometry, dotMaterial)
+      dotFour.rotation.x = Math.PI / 2
+
+      const dotFiveGeometry = new THREE.CircleGeometry(0.3, 32)
+      const dotFive = new THREE.Mesh(dotFiveGeometry, dotMaterial)
+      dotFive.rotation.x = Math.PI / 2
+
+      const dotSixGeometry = new THREE.CircleGeometry(0.3, 32)
+      const dotSix = new THREE.Mesh(dotSixGeometry, dotMaterial)
+      dotSix.rotation.x = Math.PI / 2
+      
+      const dotSevenGeometry = new THREE.CircleGeometry(0.3, 32)
+      const dotSeven = new THREE.Mesh(dotSevenGeometry, dotMaterial)
+      dotSeven.rotation.x = Math.PI / 2
+      
+      dotOne.position.set(10.5, -22, 8)
+      dotTwo.position.set(10.5, -24, 4.3)
+      dotThree.position.set(6.6, -30, -3.95)
+      dotFour.position.set(12.87, -20, 12.1)
+      dotFive.position.set(16.39, -15.68, 10.52)
+      dotSix.position.set(-18.42, -20.37, -13.73)
+      dotSeven.position.set(-16.85, -30, 8.96)
+
+      scene.add(dotOne, dotTwo, dotThree, dotFour, dotFive, dotSix, dotSeven)
 
       /**
        * Sizes
@@ -343,7 +414,7 @@ export default function webgl() {
       renderer.shadowMap.enabled = true
       renderer.shadowMap.type = THREE.PCFSoftShadowMap
       renderer.toneMapping = THREE.ACESFilmicToneMapping
-      renderer.toneMappingExposure = 1.3
+      renderer.toneMappingExposure = 0.9
 
       /**
        * Cursor
@@ -371,7 +442,6 @@ export default function webgl() {
         // controls.update()
 
         // Calculate the desired rotation and position based on the mouse position
-        // These multipliers control the speed and intensity of the movement
         const targetRotationX = mouse.y * 0.01
         const targetRotationY = mouse.x * 0.01
 

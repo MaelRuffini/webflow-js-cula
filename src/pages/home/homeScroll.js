@@ -217,24 +217,53 @@ export default function homeScroll() {
 
       sections.forEach(technologyToggle)
 
-      let dots = document.querySelectorAll('.technology__dot')
+      // let dots = document.querySelectorAll('.technology__dot')
 
-      dots.forEach((item) => {
-        let pulseTl = gsap
-          .timeline({ repeat: -1 })
-          .from(item.querySelector('.technology__dot-outer'), {
-            scale: 0,
-            duration: 1.5,
-            ease: 'easeIn',
-          })
+      // dots.forEach((item) => {
+      //   let pulseTl = gsap
+      //     .timeline({ repeat: -1 })
+      //     .from(item.querySelector('.technology__dot-outer'), {
+      //       scale: 0,
+      //       duration: 1.5,
+      //       ease: 'easeIn',
+      //     })
+      // })
+
+      gsap.from('.dots__dots-wrapper', {
+        opacity: 0,
+        duration: 0.2,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: '.dots__wrapper',
+          start: 'top top',
+        },
+      })
+
+      gsap.from('.dots__dots-next', {
+        opacity: 0,
+        duration: 0.2,
+        delay: 0.4,
+        scrollTrigger: {
+          trigger: '.dots__wrapper',
+          start: 'top top',
+        },
+      })
+
+      let technologyWrapper = document.querySelectorAll('.c-tecnology__wrapper')
+      technologyWrapper.forEach((item) => {
+        gsap.from(item.querySelectorAll('.technology__item-content'), {
+          xPercent: -100,
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.2,
+          scrollTrigger: {
+            trigger: item,
+            start: 'top top',
+          },
+        })
       })
 
       // Card center animation
-
-      // Initialize ScrollTrigger
-      gsap.registerPlugin(ScrollTrigger)
-
-      // Get the necessary elements
       const card = document.querySelector('.technology__card')
       const cardWrapper = document.querySelector('.technology__sticky')
       const triggerSection = document.querySelector('.credit-scroll__wrapper')
@@ -264,6 +293,29 @@ export default function homeScroll() {
             end: 'center center', // When the bottom of the trigger hits the top of the viewport
             scrub: true, // Smooth scrubbing
           },
+        })
+
+        gsap.to(card, {
+          rotationY: -90,
+          rotateX: 5,
+          ease: 'none',
+          scrollTrigger:{
+            trigger: '.credit__wrapper',
+            start: 'top bottom',
+            end: 'top top',
+            scrub: true
+          }
+        })
+
+        gsap.to('.technology__sticky', {
+          y: '100vh',
+          ease: 'none',
+          scrollTrigger:{
+            trigger: '.credit__wrapper',
+            start: 'top bottom',
+            end: 'top top',
+            scrub: true
+          }
         })
 
         gsap.to('.technology__card-footer', {
@@ -301,8 +353,7 @@ export default function homeScroll() {
         setCenteringAnimation()
       })
 
-      let webglTl = gsap
-        .timeline({
+      let webglTl = gsap.timeline({
           scrollTrigger: {
             trigger: triggerSection,
             start: 'center center',
@@ -355,8 +406,7 @@ export default function homeScroll() {
           duration: 0,
         })
 
-      let rotationTl = gsap
-        .timeline({
+      let rotationTl = gsap.timeline({
           scrollTrigger: {
             trigger: '.credit__sticky-wrapper',
             start: 'top top',
@@ -364,30 +414,28 @@ export default function homeScroll() {
             scrub: true,
           },
         })
-        .to(
-          '.card__recto',
-          {
-            rotationY: '155deg',
+        .fromTo('.card__recto', {
+            rotationY: isDesktop ? '-90deg' : '0deg',
+            rotationX: '5deg',
             ease: 'none',
-          },
-          0
-        )
-        .to(
-          '.card__verso',
-          {
-            rotationY: '35deg',
+          }, {
+            rotationX: '5deg',
+            rotationY: '90deg',
             ease: 'none',
-          },
-          0
-        )
-        .to(
-          '.credit__text-animation',
-          {
+          })
+        .fromTo('.card__verso', {
+            rotationY: '-90deg',
+            rotationX: '5deg',
+            ease: 'none',
+          }, {
+            rotationY: '-20deg',
+            rotationX: '5deg',
+            ease: 'none',
+          })
+        .to('.credit__text-animation', {
             x: '-200vw',
             ease: 'none',
-          },
-          0
-        )
-    }
+          }, 0.5)
+        }
   )
 }
