@@ -8,16 +8,6 @@ import homePannel from './pages/home/homePannel'
 import header from './components/header'
 import webgl from './components/webgl'
 
-// Lenis scroll
-// const lenis = new Lenis()
-
-// function raf(time) {
-//   lenis.raf(time)
-//   requestAnimationFrame(raf)
-// }
-
-// requestAnimationFrame(raf)
-
 const isHome = document.querySelector('body').classList.contains('body--home')
 if (isHome) {
   header()
@@ -25,4 +15,18 @@ if (isHome) {
   homeScroll()
   homePannel()
   webgl()
+}
+
+const isUtils = document.querySelector('body').classList.contains('body--utils')
+if (isUtils) {
+  header()
+console.log('hey')
+  const lenis = new Lenis()
+
+  function raf(time) {
+    lenis.raf(time)
+    requestAnimationFrame(raf)
+  }
+
+  requestAnimationFrame(raf)
 }
