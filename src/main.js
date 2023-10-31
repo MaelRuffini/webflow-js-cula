@@ -20,7 +20,7 @@ if (isHome) {
 const isUtils = document.querySelector('body').classList.contains('body--utils')
 if (isUtils) {
   header()
-console.log('hey')
+  
   const lenis = new Lenis()
 
   function raf(time) {
