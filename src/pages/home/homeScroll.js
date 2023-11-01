@@ -16,8 +16,6 @@ export default function homeScroll() {
       let { isDesktop, isMobile, reduceMotion } = context.conditions
 
       // What is Cula text animation
-      let aboutText = new SplitText('.subhero__text', { type: 'lines' })
-
       let aboutTl = gsap
         .timeline({
           scrollTrigger: {
@@ -32,13 +30,12 @@ export default function homeScroll() {
           ease: 'Quart.easeInOut',
         })
         .from(
-          aboutText.lines,
+          '.subhero__text',
           {
             yPercent: 50,
             opacity: 0,
             duration: 0.6,
             ease: 'Quart.easeInOut',
-            stagger: 0.1,
           },
           0.6
         )
