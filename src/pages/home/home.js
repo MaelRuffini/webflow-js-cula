@@ -38,6 +38,14 @@ export default function home(){
             card.addEventListener('click', () => { cardTl.reversed() ? cardTl.play() : cardTl.reverse() })
         })
 
+        let scrollTl = gsap.timeline({ repeat: -1 })
+        .fromTo('.hero__scroll-line', {
+            yPercent: -101,
+        }, {
+            yPercent: 101,
+            duration: 1.8,
+            ease: 'Quart.easeInOut'
+        })
 
         // Dots toggle animation
         let dots = document.querySelectorAll('.dots__dots-wrapper')

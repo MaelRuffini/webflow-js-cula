@@ -18,6 +18,10 @@ export default function webgl() {
 
   lenis.scrollTo('top', { immediate: true })
 
+  document.querySelector('.dots__dots-next').addEventListener('click', () => {
+    lenis.scrollTo('.technology__wrapper')
+})
+
   let mm = gsap.matchMedia(),
     breakPoint = 768
 
@@ -69,7 +73,7 @@ export default function webgl() {
 
           lenis.on('scroll', (e) => {
             if (lenis.progress <= 0.8) {
-              mixer.setTime(lenis.progress * 20)
+              mixer.setTime(lenis.progress * 500)
             } else {
               mixer.setTime(0)
             }
@@ -90,137 +94,43 @@ export default function webgl() {
       // GLTF loader
       const gltfLoader = new GLTFLoader(loadingManager)
       gltfLoader.setDRACOLoader(dracoLoader)
-      const cubeTextureLoader = new THREE.CubeTextureLoader()
-
-      /**
-       * Environment map & lights
-       */
-      const environmentMap = cubeTextureLoader.load([
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/651fc9c9cfa1bf1882a9fb61_px.png',
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/651fc9c983b146d0fe168850_nx.png',
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/651fc9c924850039bdb7106b_py.png',
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/651fc9c9c4d8e2dd4e48a56e_ny.png',
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/651fc9c9262ba8e696beb63e_pz.png',
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/651fc9c940c8227ee8a2ac1a_nz.png',
-      ])
-
-      environmentMap.colorSpace = THREE.SRGBColorSpace
-
-      scene.environment = environmentMap
-
-      const mainLight = new THREE.DirectionalLight('white', 1)
-      mainLight.castShadow = true
-      mainLight.shadow.mapSize.width = 2048
-      mainLight.shadow.mapSize.height = 2048
-      mainLight.position.set(-1.4, 0.8, -0.75)
-
-      const secondLight = new THREE.PointLight('white', 0.9)
-      secondLight.castShadow = true
-      secondLight.shadow.mapSize.width = 2048
-      secondLight.shadow.mapSize.height = 2048
-      secondLight.position.set(7.8, 1.6, -1.26)
-
-      const thirdLight = new THREE.PointLight('white', 5)
-      thirdLight.castShadow = true
-      thirdLight.shadow.mapSize.width = 2048
-      thirdLight.shadow.mapSize.height = 2048
-      thirdLight.position.set(9.7, 2.9, -9.6)
-
-      // const pointLightHelper = new THREE.PointLightHelper(thirdLight, 1)
-      // scene.add(pointLightHelper)
-
-      // gui
-      //   .add(thirdLight.position, 'x')
-      //   .name(' Main Light X')
-      //   .min(-5)
-      //   .max(15)
-      //   .step(0.01)
-      // gui
-      //   .add(thirdLight.position, 'y')
-      //   .name(' Main Light Y')
-      //   .min(-15)
-      //   .max(15)
-      //   .step(0.01)
-      // gui
-      //   .add(thirdLight.position, 'z')
-      //   .name(' Main Light Z')
-      //   .min(-15)
-      //   .max(15)
-      //   .step(0.01)
-      // gui
-      //   .add(thirdLight, 'intensity')
-      //   .name(' Main Intensity')
-      //   .min(0)
-      //   .max(5)
-      //   .step(0.01)
+      const cameraLoader = new GLTFLoader()
+      const textureLoader = new THREE.TextureLoader(loadingManager)
 
       /**
        * Textures
        */
-      // const bakedTexture = textureLoader.load('baked.jpg')
-      // bakedTexture.flipY = false
-      // bakedTexture.SRGBColorSpace = THREE.SRGBColorSpace
+      const bakedFactories = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6548234f7268af8dfa089e18_factories.jpg')
+      bakedFactories.flipY = false
+      bakedFactories.SRGBColorSpace = THREE.SRGBColorSpace
+
+      const bakedTerrain = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6548234f2efa4dbb0728b0b8_terrain.jpg')
+      bakedTerrain.flipY = false
+      bakedTerrain.SRGBColorSpace = THREE.SRGBColorSpace
+
+      const bakedTrees = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6548234f035d486b5707814c_trees.jpg')
+      bakedTrees.flipY = false
+      bakedTrees.SRGBColorSpace = THREE.SRGBColorSpace
+
+      const bakedVehicle = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6548234f0c8996a7570c92cc_vehicle.jpg')
+      bakedVehicle.flipY = false
+      bakedVehicle.SRGBColorSpace = THREE.SRGBColorSpace
+
+      const bakedWorld = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/65482856d991bbc9048af2a7_world.jpg')
+      bakedWorld.flipY = false
+      bakedWorld.SRGBColorSpace = THREE.SRGBColorSpace
 
       /**
        * Materials
        */
       // Baked material
-      const envMapIntensity = 1.8
+      // const envMapIntensity = 1.8
 
-      const waterMaterial = new THREE.MeshStandardMaterial({
-        color: '#C2E9ED',
-        roughness: 0.3,
-        metalness: 0,
-        envMap: environmentMap,
-        envMapIntensity: envMapIntensity,
-      })
-      const fieldOneMaterial = new THREE.MeshStandardMaterial({
-        color: '#D2E2D3',
-        roughness: 0.3,
-        metalness: 0,
-        envMap: environmentMap,
-        envMapIntensity: envMapIntensity,
-      })
-      const fieldTwoMaterial = new THREE.MeshStandardMaterial({
-        color: '#F6F4DD',
-        roughness: 0.1,
-        metalness: 0,
-        envMap: environmentMap,
-        envMapIntensity: envMapIntensity,
-      })
-      const treeHeadMaterial = new THREE.MeshStandardMaterial({
-        color: '#CBECCD',
-        roughness: 0.3,
-        metalness: 0,
-        envMap: environmentMap,
-        envMapIntensity: envMapIntensity,
-      })
-      const treeStemMaterial = new THREE.MeshStandardMaterial({
-        color: '#E1BDAE',
-        envMap: environmentMap,
-        envMapIntensity: envMapIntensity,
-      })
-      const whiteMaterial = new THREE.MeshStandardMaterial({
-        color: '#F9F9F9',
-        roughness: 0.3,
-        metalness: 0,
-        envMap: environmentMap,
-        envMapIntensity: envMapIntensity,
-      })
-      const woodRestMaterial = new THREE.MeshStandardMaterial({
-        color: '#E1BDAE',
-        roughness: 0.3,
-        metalness: 0,
-        envMap: environmentMap,
-        envMapIntensity: envMapIntensity,
-      })
-      const blackMaterial = new THREE.MeshStandardMaterial({
-        color: '#5C5C5C',
-        roughness: 0.3,
-        metalness: 0,
-        envMap: environmentMap,
-        envMapIntensity: envMapIntensity,
-      })
+      const factoriesMaterial = new THREE.MeshBasicMaterial({ map: bakedFactories })
+      const terrainMaterial = new THREE.MeshBasicMaterial({ map: bakedTerrain })
+      const treesMaterial = new THREE.MeshBasicMaterial({ map: bakedTrees })
+      const vehicleMaterial = new THREE.MeshBasicMaterial({ map: bakedVehicle })
+      const worldMaterial = new THREE.MeshBasicMaterial({ map: bakedWorld })
 
       /**
        * Model
@@ -231,138 +141,44 @@ export default function webgl() {
       let clouds
 
       gltfLoader.load(
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/653debb3718cbd5c51d797c4_export.glb.txt',
+        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654851b55fd8fa6155f5affe_export.glb.txt',
         (gltf) => {
+
           mixer = new THREE.AnimationMixer(gltf.scene)
           const action = mixer.clipAction(gltf.animations[0])
 
           action.play()
 
-          // Get each object
-          const water = gltf.scene.children.find(
-            (child) => child.name === 'water'
-          )
-          const fieldOne = gltf.scene.children.find(
-            (child) => child.name === 'field-one'
-          )
-          const fieldTwo = gltf.scene.children.find(
-            (child) => child.name === 'field-two'
-          )
-          const treeHead = gltf.scene.children.find(
-            (child) => child.name === 'tree-head'
-          )
-          const treeStem = gltf.scene.children.find(
-            (child) => child.name === 'tree-stem'
-          )
-          const white = gltf.scene.children.find(
-            (child) => child.name === 'white'
-          )
-          const woodRest = gltf.scene.children.find(
-            (child) => child.name === 'wood-rest'
-          )
-          const black = gltf.scene.children.find(
-            (child) => child.name === 'black'
-          )
-          clouds = gltf.scene.children.find((child) => child.name === 'clouds')
-
           blenderCamera = gltf.cameras['0']
           blenderCamera.aspect = sizes.width / sizes.height
 
+          scene.add(gltf.scene)
+
+          // Get each object
+          const factories = gltf.scene.children.find((child) => child.name === 'factories')
+          const terrain = gltf.scene.children.find((child) => child.name === 'terrain')
+          const trees = gltf.scene.children.find((child) => child.name === 'trees')
+          const vehicle = gltf.scene.children.find((child) => child.name === 'vehicle')
+          const world = gltf.scene.children.find((child) => child.name === 'world')
+
           // Apply materials
-          water.material = waterMaterial
-          water.castShadow = true
-          water.receiveShadow = true
-
-          fieldOne.material = fieldOneMaterial
-          fieldOne.castShadow = true
-          fieldOne.receiveShadow = true
-
-          fieldTwo.material = fieldTwoMaterial
-          fieldTwo.castShadow = true
-          fieldTwo.receiveShadow = true
-
-          treeHead.material = treeHeadMaterial
-          treeHead.castShadow = true
-          treeHead.receiveShadow = true
-
-          treeStem.material = treeStemMaterial
-          treeStem.castShadow = true
-          treeStem.receiveShadow = true
-
-          white.material = whiteMaterial
-          white.castShadow = true
-          white.receiveShadow = true
-
-          woodRest.material = woodRestMaterial
-          woodRest.castShadow = true
-          woodRest.receiveShadow = true
-
-          clouds.material = whiteMaterial
-          clouds.castShadow = true
-          clouds.receiveShadow = true
-
-          black.material = blackMaterial
-          black.castShadow = true
-          black.receiveShadow = true
+          factories.material = factoriesMaterial
+          terrain.material = terrainMaterial
+          trees.material = treesMaterial
+          vehicle.material = vehicleMaterial
+          world.material = worldMaterial
 
           modelGroup = new THREE.Group()
           modelGroup.add(
-            water,
-            fieldOne,
-            fieldTwo,
-            treeHead,
-            treeStem,
-            white,
-            clouds,
-            woodRest,
-            black,
-            mainLight,
-            secondLight,
-            thirdLight
+            factories,
+            terrain,
+            trees,
+            vehicle,
+            world
           )
           scene.add(gltf.scene, modelGroup)
         }
       )
-
-      const dotMaterial = new THREE.MeshBasicMaterial({ color: "#57EEA6" })
-
-      const dotOneGeometry = new THREE.CircleGeometry(0.3, 32)
-      const dotOne = new THREE.Mesh(dotOneGeometry, dotMaterial)
-      dotOne.rotation.x = Math.PI / 2
-      
-      const dotTwoGeometry = new THREE.CircleGeometry(0.3, 32)
-      const dotTwo = new THREE.Mesh(dotTwoGeometry, dotMaterial)
-      dotTwo.rotation.x = Math.PI / 2
-
-      const dotThreeGeometry = new THREE.CircleGeometry(0.3, 32)
-      const dotThree = new THREE.Mesh(dotThreeGeometry, dotMaterial)
-      dotThree.rotation.x = Math.PI / 2
-
-      const dotFourGeometry = new THREE.CircleGeometry(0.3, 32)
-      const dotFour = new THREE.Mesh(dotFourGeometry, dotMaterial)
-      dotFour.rotation.x = Math.PI / 2
-
-      const dotFiveGeometry = new THREE.CircleGeometry(0.3, 32)
-      const dotFive = new THREE.Mesh(dotFiveGeometry, dotMaterial)
-      dotFive.rotation.x = Math.PI / 2
-
-      const dotSixGeometry = new THREE.CircleGeometry(0.3, 32)
-      const dotSix = new THREE.Mesh(dotSixGeometry, dotMaterial)
-      dotSix.rotation.x = Math.PI / 2
-      
-      const dotSevenGeometry = new THREE.CircleGeometry(0.3, 32)
-      const dotSeven = new THREE.Mesh(dotSevenGeometry, dotMaterial)
-      dotSeven.rotation.x = Math.PI / 2
-      
-      dotOne.position.set(10.5, -22, 8)
-      dotTwo.position.set(10.5, -24, 4.3)
-      dotThree.position.set(6.6, -30, -3.95)
-      dotFour.position.set(12.87, -20, 12.1)
-      dotFive.position.set(16.39, -15.68, 10.52)
-      dotSix.position.set(-18.42, -20.37, -13.73)
-      dotSeven.position.set(-16.85, -30, 8.96)
-
-      scene.add(dotOne, dotTwo, dotThree, dotFour, dotFive, dotSix, dotSeven)
 
       /**
        * Sizes
@@ -408,13 +224,10 @@ export default function webgl() {
         antialias: true,
         alpha: true,
       })
-      renderer.outputColorSpace = THREE.SRGBColorSpace
+      renderer.outputColorSpace = THREE.LinearSRGBColorSpace
       renderer.setSize(sizes.width, sizes.height)
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-      renderer.shadowMap.enabled = true
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap
-      renderer.toneMapping = THREE.ACESFilmicToneMapping
-      renderer.toneMappingExposure = 0.9
+    
 
       /**
        * Cursor
@@ -464,7 +277,6 @@ export default function webgl() {
         // Call tick again on the next frame
         window.requestAnimationFrame(tick)
       }
-
       // tick()
     }
   )
