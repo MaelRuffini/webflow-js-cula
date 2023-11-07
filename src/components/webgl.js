@@ -75,7 +75,7 @@ export default function webgl() {
             if (lenis.progress <= 0.8) {
               mixer.setTime(lenis.progress * 500)
             } else {
-              mixer.setTime(0)
+              mixer.setTime(30)
             }
           })
         },
@@ -100,23 +100,23 @@ export default function webgl() {
       /**
        * Textures
        */
-      const bakedFactories = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6548234f7268af8dfa089e18_factories.jpg')
+      const bakedFactories = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6549d0585f0353d48d85f301_factories.jpg')
       bakedFactories.flipY = false
       bakedFactories.SRGBColorSpace = THREE.SRGBColorSpace
 
-      const bakedTerrain = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6548234f2efa4dbb0728b0b8_terrain.jpg')
+      const bakedTerrain = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6549d0588be62eb1c1ba1ae3_terrain.jpg')
       bakedTerrain.flipY = false
       bakedTerrain.SRGBColorSpace = THREE.SRGBColorSpace
 
-      const bakedTrees = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6548234f035d486b5707814c_trees.jpg')
+      const bakedTrees = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6549d058d20b2802a8ea87db_trees.jpg')
       bakedTrees.flipY = false
       bakedTrees.SRGBColorSpace = THREE.SRGBColorSpace
 
-      const bakedVehicle = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6548234f0c8996a7570c92cc_vehicle.jpg')
+      const bakedVehicle = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6549d0585839b971be613037_vehicle.jpg')
       bakedVehicle.flipY = false
       bakedVehicle.SRGBColorSpace = THREE.SRGBColorSpace
 
-      const bakedWorld = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/65482856d991bbc9048af2a7_world.jpg')
+      const bakedWorld = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6549d058af71880e6a2ba26b_world.jpg')
       bakedWorld.flipY = false
       bakedWorld.SRGBColorSpace = THREE.SRGBColorSpace
 
@@ -141,7 +141,7 @@ export default function webgl() {
       let clouds
 
       gltfLoader.load(
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654851b55fd8fa6155f5affe_export.glb.txt',
+        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6549d1add20b2802a8eb6899_export.glb.txt',
         (gltf) => {
 
           mixer = new THREE.AnimationMixer(gltf.scene)

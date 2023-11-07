@@ -40,6 +40,17 @@ export default function homeScroll() {
           0.6
         )
 
+        gsap.to('.hero__scroll-wrapper', {
+          opacity: 0,
+          duration: 0.8,
+          ease: 'Quart.easeInOut',
+          scrollTrigger:{
+            trigger: '.hero__wrapper',
+            start: 'top -10',
+            toggleActions: 'play none none reverse'
+          }
+        })
+
       // gsap.from('.canvas__wrapper', {
       //   y: isDesktop ? '15rem' : 0,
       //   ease: 'none',
@@ -248,6 +259,7 @@ export default function homeScroll() {
 
       let technologyWrapper = document.querySelectorAll('.c-tecnology__wrapper')
       technologyWrapper.forEach((item) => {
+
         gsap.from(item.querySelectorAll('.technology__item-content'), {
           xPercent: -100,
           opacity: 0,
@@ -256,8 +268,10 @@ export default function homeScroll() {
           scrollTrigger: {
             trigger: item,
             start: 'top top',
+            toggleActions: 'play none none reverse'
           },
         })
+
       })
 
       // Card center animation
