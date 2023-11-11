@@ -8,7 +8,6 @@ import homePannel from './pages/home/homePannel'
 import header from './components/header'
 import webgl from './components/webgl'
 
-window.onresize = function(){ location.reload() }
 
 const isHome = document.querySelector('body').classList.contains('body--home')
 if (isHome) {
