@@ -7,7 +7,9 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
 export default function webgl() {
   // Lenis scroll
-  const lenis = new Lenis()
+  const lenis = new Lenis({
+    smoothTouch: true
+  })
 
   function raf(time) {
     lenis.raf(time)
