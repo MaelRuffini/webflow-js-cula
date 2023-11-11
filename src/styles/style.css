@@ -1,3 +1,7 @@
+.body{
+    overflow: clip;
+}
+
 .link__wrapper:hover .link__text-wrapper,
 .link__wrapper:hover .link__arrow-wrapper{
     background-color: #29364B;
