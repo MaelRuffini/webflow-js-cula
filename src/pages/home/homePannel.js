@@ -6,6 +6,7 @@ export default function homePannel(){
 
     mm.add('(min-width: 768px)', () => {
 
+
          // Col toggle animation
         let offerColLeft = document.querySelector('.offer__col--left')
         let offerColCenter = document.querySelector('.offer__col--center')
@@ -13,17 +14,12 @@ export default function homePannel(){
 
         let offerColLeftTl = gsap.timeline({ paused: true, reversed: true })
         .to(offerColLeft, {
-            width: '80%',
+            width: '100%',
             duration: 1.4,
             ease: 'Quart.easeInOut'
         })
         .to(offerColLeft.querySelector('.offer__toggle'), {
-            width: '90%',
-            duration: 1.4,
-            ease: 'Quart.easeInOut'
-        }, 0)
-        .to(offerColLeft.querySelector('.offer__close-wrapper'), {
-            width: '5rem',
+            width: '100%',
             duration: 1.4,
             ease: 'Quart.easeInOut'
         }, 0)
@@ -34,23 +30,18 @@ export default function homePannel(){
         }, 0)
         .from(offerColLeft.querySelector('.offer__toggle'), {
             opacity: 0,
-            duration: 0.5,
+            duration: 0.3,
             ease: 'Quart.easeInOut'
         }, 1.2)
 
         let offerColCenterTl = gsap.timeline({ paused: true, reversed: true })
         .to(offerColCenter, {
-            width: '80%',
+            width: '100%',
             duration: 1.4,
             ease: 'Quart.easeInOut'
         }, 0)
         .to(offerColCenter.querySelector('.offer__toggle'), {
-            width: '90%',
-            duration: 1.4,
-            ease: 'Quart.easeInOut'
-        }, 0)
-        .to(offerColCenter.querySelector('.offer__close-wrapper'), {
-            width: '5rem',
+            width: '100%',
             duration: 1.4,
             ease: 'Quart.easeInOut'
         }, 0)
@@ -61,23 +52,18 @@ export default function homePannel(){
         }, 0)
         .from(offerColCenter.querySelector('.offer__toggle'), {
             opacity: 0,
-            duration: 0.5,
+            duration: 0.3,
             ease: 'Quart.easeInOut'
         }, 1.2)
 
         let offerColRightTl = gsap.timeline({ paused: true, reversed: true })
         .to(offerColRight, {
-            width: '80%',
+            width: '100%',
             duration: 1.4,
             ease: 'Quart.easeInOut'
         }, 0)
         .to(offerColRight.querySelector('.offer__toggle'), {
-            width: '90%',
-            duration: 1.4,
-            ease: 'Quart.easeInOut'
-        }, 0)
-        .to(offerColRight.querySelector('.offer__close-wrapper'), {
-            width: '5rem',
+            width: '100%',
             duration: 1.4,
             ease: 'Quart.easeInOut'
         }, 0)
@@ -88,26 +74,32 @@ export default function homePannel(){
         }, 0)
         .from(offerColRight.querySelector('.offer__toggle'), {
             opacity: 0,
-            duration: 0.5,
+            duration: 0.3,
             ease: 'Quart.easeInOut'
         }, 1.2)
 
         offerColCenter.addEventListener('click', () => {
                 offerColLeftTl.reverse()
-                offerColCenterTl.play()
                 offerColRightTl.reverse()
+                setTimeout(() => {
+                    offerColCenterTl.play()
+                }, 1000)
         })
 
         offerColRight.addEventListener('click', () => {
             offerColLeftTl.reverse()
             offerColCenterTl.reverse()
-            offerColRightTl.play()
+            setTimeout(() => {
+                offerColRightTl.play()
+            }, 1000)
         })
 
         offerColLeft.addEventListener('click', () => {
-            offerColLeftTl.play()
             offerColCenterTl.reverse()
             offerColRightTl.reverse()
+            setTimeout(() => {
+                offerColLeftTl.play()
+            }, 1000)
         })
 
         offerColLeft.click()

@@ -225,17 +225,28 @@ export default function homeScroll() {
 
       sections.forEach(technologyToggle)
 
-      // let dots = document.querySelectorAll('.technology__dot')
+      gsap.to('.button__wrapper--technology', {
+        opacity: 0,
+        duration: 0.2,
+        ease: 'Quart.easeInOut',
+        scrollTrigger:{
+          trigger: '.button__wrapper--technology',
+          start: 'center 85%',
+          toggleActions: 'play none none reverse'
+        }
+      })
 
-      // dots.forEach((item) => {
-      //   let pulseTl = gsap
-      //     .timeline({ repeat: -1 })
-      //     .from(item.querySelector('.technology__dot-outer'), {
-      //       scale: 0,
-      //       duration: 1.5,
-      //       ease: 'easeIn',
-      //     })
-      // })
+      let dots = document.querySelectorAll('.technology__dot')
+
+      dots.forEach((item) => {
+        let pulseTl = gsap
+          .timeline({ repeat: -1 })
+          .from(item.querySelector('.technology__dot-outer'), {
+            scale: 0,
+            duration: 1.5,
+            ease: 'easeIn',
+          })
+      })
 
       gsap.from('.dots__dots-wrapper', {
         opacity: 0,
@@ -271,6 +282,19 @@ export default function homeScroll() {
             toggleActions: 'play none none reverse'
           },
         })
+
+        gsap.from(item.querySelectorAll('.technology__dot'), {
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.2,
+          scrollTrigger: {
+            trigger: item,
+            start: 'top top',
+            toggleActions: 'play none none reverse'
+          },
+        })
+
+
 
       })
 
