@@ -1,5 +1,5 @@
-html{
-    overflow: clip;
+body{
+    overscroll-behavior: none;
 }
 
 .link__wrapper:hover .link__text-wrapper,
