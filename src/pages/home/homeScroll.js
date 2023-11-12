@@ -73,10 +73,8 @@ export default function homeScroll() {
       // })
 
       // Credit text animation
-      let creditText = new SplitText('.credit__text', { type: 'lines' })
 
-      let creditTl = gsap
-        .timeline({
+      let creditTl = gsap.timeline({
           scrollTrigger: {
             trigger: '.credit__sticky-wrapper',
             start: '80% bottom',
@@ -84,15 +82,15 @@ export default function homeScroll() {
           },
         })
         .from('.credit__title', {
-          yPercent: 100,
+          yPercent: isDesktop ? 100 : 0,
           duration: 1.2,
           ease: 'Quart.easeInOut',
         })
         .from(
-          creditText.lines,
+          '.credit__text',
           {
-            yPercent: 50,
-            opacity: 0,
+            yPercent: isDesktop ? 50 : 0,
+            opacity: isDesktop ? 0 : 1,
             duration: 0.6,
             ease: 'Quart.easeInOut',
             stagger: 0.1,
@@ -330,20 +328,9 @@ export default function homeScroll() {
           },
         })
 
-        gsap.to(card, {
-          rotationY: -90,
-          rotateX: 5,
-          ease: 'none',
-          scrollTrigger:{
-            trigger: '.credit__wrapper',
-            start: 'top bottom',
-            end: 'top top',
-            scrub: true
-          }
-        })
 
         gsap.to('.technology__sticky', {
-          y: '100vh',
+          y: '80vh',
           ease: 'none',
           scrollTrigger:{
             trigger: '.credit__wrapper',
@@ -449,24 +436,6 @@ export default function homeScroll() {
             scrub: true,
           },
         })
-        .fromTo('.card__recto', {
-            rotationY: isDesktop ? '-90deg' : '0deg',
-            rotationX: '5deg',
-            ease: 'none',
-          }, {
-            rotationX: '5deg',
-            rotationY: '90deg',
-            ease: 'none',
-          })
-        .fromTo('.card__verso', {
-            rotationY: '-90deg',
-            rotationX: '5deg',
-            ease: 'none',
-          }, {
-            rotationY: '-20deg',
-            rotationX: '5deg',
-            ease: 'none',
-          })
         .to('.credit__text-animation', {
             x: '-200vw',
             ease: 'none',
