@@ -16,66 +16,66 @@ export default function homePannel(){
         .to(offerColLeft, {
             width: '100%',
             duration: 1.4,
-            ease: 'easeInOut'
+            ease: 'Quart.easeInOut'
         })
         .to(offerColLeft.querySelector('.offer__toggle'), {
             width: '100%',
             duration: 1.4,
-            ease: 'easeInOut'
+            ease: 'Quart.easeInOut'
         }, 0)
         .to(offerColLeft.querySelector('.offer__close-text'), {
             opacity: 0,
             duration: 1.4,
-            ease: 'easeInOut'
+            ease: 'Quart.easeInOut'
         }, 0)
         .from(offerColLeft.querySelector('.offer__toggle'), {
             opacity: 0,
             duration: 0.3,
-            ease: 'easeInOut'
+            ease: 'Quart.easeInOut'
         }, 1.2)
 
         let offerColCenterTl = gsap.timeline({ paused: true, reversed: true })
         .to(offerColCenter, {
             width: '100%',
             duration: 1.4,
-            ease: 'easeInOut'
+            ease: 'Quart.easeInOut'
         }, 0)
         .to(offerColCenter.querySelector('.offer__toggle'), {
             width: '100%',
             duration: 1.4,
-            ease: 'easeInOut'
+            ease: 'Quart.easeInOut'
         }, 0)
         .to(offerColCenter.querySelector('.offer__close-text'), {
             opacity: 0,
             duration: 1.4,
-            ease: 'easeInOut'
+            ease: 'Quart.easeInOut'
         }, 0)
         .from(offerColCenter.querySelector('.offer__toggle'), {
             opacity: 0,
             duration: 0.3,
-            ease: 'easeInOut'
+            ease: 'Quart.easeInOut'
         }, 1.2)
 
         let offerColRightTl = gsap.timeline({ paused: true, reversed: true })
         .to(offerColRight, {
             width: '100%',
             duration: 1.4,
-            ease: 'easeInOut'
+            ease: 'Quart.easeInOut'
         }, 0)
         .to(offerColRight.querySelector('.offer__toggle'), {
             width: '100%',
             duration: 1.4,
-            ease: 'easeInOut'
+            ease: 'Quart.easeInOut'
         }, 0)
         .to(offerColRight.querySelector('.offer__close-text'), {
             opacity: 0,
             duration: 1.4,
-            ease: 'easeInOut'
+            ease: 'Quart.easeInOut'
         }, 0)
         .from(offerColRight.querySelector('.offer__toggle'), {
             opacity: 0,
             duration: 0.3,
-            ease: 'easeInOut'
+            ease: 'Quart.easeInOut'
         }, 1.2)
 
         offerColCenter.addEventListener('click', () => {
