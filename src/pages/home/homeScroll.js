@@ -329,8 +329,19 @@ export default function homeScroll() {
         })
 
 
-        gsap.to('.technology__sticky', {
-          y: '80vh',
+        // gsap.to('.technology__sticky', {
+        //   y: '80vh',
+        //   ease: 'none',
+        //   scrollTrigger:{
+        //     trigger: '.credit__wrapper',
+        //     start: 'top bottom',
+        //     end: 'top top',
+        //     scrub: true
+        //   }
+        // })
+
+        gsap.to('.line', {
+          scaleY: isDesktop ? 1 : 0,
           ease: 'none',
           scrollTrigger:{
             trigger: '.credit__wrapper',

@@ -168,7 +168,7 @@ export default function webgl() {
         if (isSmallScreen) {
           path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654efc9d3557b10a70880c63_export.glb.txt'
         } else {
-          path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654efd345b5fc501c7c2d0a8_model.glb.txt'
+          path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6551ee8cfd2d256b958bddc6_desktop.glb.txt'
         }
 
       gltfLoader.load(
