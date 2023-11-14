@@ -346,11 +346,12 @@ export default function homeScroll() {
             start: 'center center',
             end: 'bottom bottom',
             scrub: true,
-            invalidateOnRefresh: true
+            invalidateOnRefresh: true,
+            id: 'borderTl',
           }
         })
         .to('.credit__overlay', {
-          borderWidth: isDesktop ? '32em 45em' : '0px',
+          borderWidth: isDesktop ? '40em 55em' : '0px',
           ease: 'none',
         }, 0)
 
@@ -385,6 +386,7 @@ export default function homeScroll() {
       window.addEventListener('resize', () => {
         // Kill the previous ScrollTrigger instance to avoid stacking
         ScrollTrigger.getById('centerCardTrigger')?.kill()
+        ScrollTrigger.getById('borderTl')?.kill()
         // Call the function again to reset the animation with new values
         setCenteringAnimation()
       })
