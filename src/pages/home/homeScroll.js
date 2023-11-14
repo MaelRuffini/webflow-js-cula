@@ -306,7 +306,7 @@ export default function homeScroll() {
         ScrollTrigger.getById('mainAnimation')?.kill()
         ScrollTrigger.getById('onLeaveBackAnimation')?.kill()
         // Calculate the positions to center the card on the screen
-        const centerY = window.innerHeight / 2 - card.offsetHeight / 2
+        const centerY = window.innerHeight / 2 - card.offsetHeight / 2 - 32
         const rect = card.getBoundingClientRect()
         const centerX = (window.innerWidth - rect.width) / 2 - rect.left
 
