@@ -350,7 +350,7 @@ export default function homeScroll() {
           }
         })
         .to('.credit__overlay', {
-          borderWidth: isDesktop ? '32rem 45rem' : '0px',
+          borderWidth: isDesktop ? '32em 45em' : '0px',
           ease: 'none',
         }, 0)
 
