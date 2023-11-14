@@ -345,7 +345,8 @@ export default function homeScroll() {
             trigger: '.credit-scroll__wrapper',
             start: 'center center',
             end: 'bottom bottom',
-            scrub: true
+            scrub: true,
+            invalidateOnRefresh: true
           }
         })
         .to('.credit__overlay', {
