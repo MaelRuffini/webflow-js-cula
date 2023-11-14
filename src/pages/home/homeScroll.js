@@ -340,16 +340,19 @@ export default function homeScroll() {
         //   }
         // })
 
-        gsap.to('.line', {
-          scaleY: isDesktop ? 1 : 0,
-          ease: 'none',
+        let borderTl = gsap.timeline({
           scrollTrigger:{
-            trigger: '.credit__wrapper',
-            start: 'top bottom',
-            end: 'top top',
-            scrub: true
+            trigger: '.credit-scroll__wrapper',
+            start: 'center center',
+            end: 'bottom bottom',
+            scrub: true,
+            markers: true
           }
         })
+        .to('.credit__overlay', {
+          borderWidth: isD ? '30rem 45rem' : '0px',
+          ease: 'none',
+        }, 0)
 
         gsap.to('.technology__card-footer', {
           height: 'auto',
