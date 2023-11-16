@@ -76,7 +76,7 @@ export default function webgl() {
           lenis.on('scroll', (e) => {
             let progress = lenis.progress * 10
             if (lenis.progress <= 0.8) {
-              mixer.setTime(lenis.progress * 500)
+              mixer.setTime(lenis.progress * 20)
             } else {
               mixer.setTime(30)
             }
@@ -136,7 +136,7 @@ export default function webgl() {
       bakedVehicle.SRGBColorSpace = THREE.SRGBColorSpace
 
       const bakedWorld = textureLoader.load(
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654eeb27746087a00808f8e5_world.jpg'
+        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/65560f67397ed59eff007ddf_world.jpg'
       )
       bakedWorld.flipY = false
       bakedWorld.SRGBColorSpace = THREE.SRGBColorSpace
@@ -251,8 +251,31 @@ export default function webgl() {
       dotFive.position.set(16.39, -15.68, 10.52)
       dotSix.position.set(-18.42, -20.37, -13.73)
       dotSeven.position.set(-16.85, -30, 8.96)
+    
 
       scene.add(dotOne, dotTwo, dotThree, dotFour, dotFive, dotSix, dotSeven)
+
+      let arr = [dotOne, dotTwo, dotThree, dotFour, dotFive, dotSix, dotSeven]
+
+      // arr.forEach(item => {
+      //   let delay = Math.random() * 10
+      //   let dotTl = gsap.timeline({ repeat: -1 })
+      //   .to(item.scale, {
+      //     x: 1.5,
+      //     y: 1.5,
+      //     z: 1.5,
+      //     ease: 'Quart.easeInOut',
+      //     duration: 1.6,
+      //     delay: delay
+      //   })
+      //   .to(item.scale, {
+      //     x: 0.5,
+      //     y: 0.5,
+      //     z: 0.5,
+      //     ease: 'Quart.easeInOut',
+      //     duration: 0.8,
+      //   })
+      // })
 
       /**
        * Sizes
@@ -301,6 +324,7 @@ export default function webgl() {
       renderer.outputColorSpace = THREE.LinearSRGBColorSpace
       renderer.setSize(sizes.width, sizes.height)
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+      renderer.toneMapping = THREE.NoToneMapping
 
       /**
        * Cursor
