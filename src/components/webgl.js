@@ -76,7 +76,7 @@ export default function webgl() {
           lenis.on('scroll', (e) => {
             let progress = lenis.progress * 10
             if (lenis.progress <= 0.8) {
-              mixer.setTime(lenis.progress * 20)
+              mixer.setTime(lenis.progress * 500)
             } else {
               mixer.setTime(30)
             }
@@ -324,7 +324,6 @@ export default function webgl() {
       renderer.outputColorSpace = THREE.LinearSRGBColorSpace
       renderer.setSize(sizes.width, sizes.height)
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-      renderer.toneMapping = THREE.NoToneMapping
 
       /**
        * Cursor
