@@ -136,7 +136,7 @@ export default function webgl() {
       bakedVehicle.SRGBColorSpace = THREE.SRGBColorSpace
 
       const bakedWorld = textureLoader.load(
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/65560f67397ed59eff007ddf_world.jpg'
+        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/65563440837f48a18638563c_world.jpg'
       )
       bakedWorld.flipY = false
       bakedWorld.SRGBColorSpace = THREE.SRGBColorSpace
