@@ -126,7 +126,7 @@ export default function webgl() {
           }
 
           document.addEventListener('scroll', () => {
-            const creditTop = creditStickyWrapper.getBoundingClientRect().center
+            const creditTop = creditStickyWrapper.getBoundingClientRect().top
             normalScroll = creditTop <= window.innerHeight
           })
 
