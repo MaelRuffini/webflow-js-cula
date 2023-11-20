@@ -148,7 +148,6 @@ export default function home() {
       })
 
       document.querySelector('.dots__dots-next').addEventListener('mouseenter', () => {
-        console.log('hey')
         nextTl.play()
       })
       document.querySelector('.dots__dots-next').addEventListener('mouseleave', () => {

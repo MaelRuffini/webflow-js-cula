@@ -94,7 +94,7 @@ export default function webgl() {
           const totalSections = sections.length
           let isScrolling = false
 
-          const creditStickyWrapper = document.querySelector('.credit-scroll__wrapper')
+          const creditStickyWrapper = document.querySelector('.credit-scroll__trigger')
           let normalScroll = false
 
           // Function for custom scroll behavior
