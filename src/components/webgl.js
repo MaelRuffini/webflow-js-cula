@@ -6,7 +6,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
 export default function webgl() {
-  // Add this at the top of your script
   window.onbeforeunload = function () {
     window.scrollTo(0, 0)
   }
@@ -27,9 +26,13 @@ export default function webgl() {
 
   // lenis.scrollTo('top', { immediate: true })
 
-  // document.querySelector('.dots__dots-next').addEventListener('click', () => {
-  //   lenis.scrollTo('.technology__wrapper')
-  // })
+  document.querySelector('.dots__dots-next').addEventListener('click', () => {
+    window.scrollBy({
+      top: window.innerHeight,
+      left: 0,
+      behavior: 'smooth',
+    })
+  })
 
   let mm = gsap.matchMedia(),
     breakPoint = 768
@@ -64,6 +67,8 @@ export default function webgl() {
       const loadingManager = new THREE.LoadingManager(
         // Loaded
         () => {
+          document.querySelector('.body--home').style.overflow = 'auto'
+
           let loaderTl = gsap
             .timeline()
             .to('.loader__wrapper', {
@@ -80,20 +85,10 @@ export default function webgl() {
           blenderCamera.aspect = sizes.width / sizes.height
           blenderCamera.updateProjectionMatrix()
 
-          // lenis.on('scroll', (e) => {
-          //   let progress = lenis.progress * 10
-          //   if (lenis.progress <= 0.8) {
-          //     mixer.setTime(lenis.progress * 500)
-          //   } else {
-          //     mixer.setTime(30)
-          //   }
-
-          //   if(progress >= 0.5){
-          //     dotMaterial.opacity = 0
-          //   } else{
-          //     dotMaterial.opacity = 1
-          //   }
-          // })
+          // Function to check if the device is touch-capable
+          function isTouchDevice() {
+            return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
+          }
 
           const sections = document.querySelectorAll('section')
           const totalSections = sections.length
@@ -102,37 +97,33 @@ export default function webgl() {
           const creditStickyWrapper = document.querySelector('.credit-scroll__wrapper')
           let normalScroll = false
 
-          document.addEventListener(
-            'wheel',
-            (event) => {
-              if (normalScroll) return
+          // Function for custom scroll behavior
+          function handleCustomScroll(event) {
+            if (normalScroll) return
 
-              event.preventDefault() // Prevent the default scroll
+            event.preventDefault() // Prevent the default scroll
 
-              if (isScrolling) return
-              isScrolling = true
+            if (isScrolling) return
+            isScrolling = true
 
-              const delta = event.wheelDelta || -event.deltaY
-              const currentSectionIndex = Math.round(
-                window.scrollY / window.innerHeight
-              )
-              let nextSectionIndex =
-                delta > 0 ? currentSectionIndex - 1 : currentSectionIndex + 1
+            const delta = event.wheelDelta || -event.deltaY
+            const currentSectionIndex = Math.round(window.scrollY / window.innerHeight)
+            let nextSectionIndex = delta > 0 ? currentSectionIndex - 1 : currentSectionIndex + 1
 
-              nextSectionIndex = Math.max(
-                0,
-                Math.min(nextSectionIndex, totalSections - 1)
-              )
-              const nextSectionTop = nextSectionIndex * window.innerHeight
+            nextSectionIndex = Math.max(0, Math.min(nextSectionIndex, totalSections - 1))
+            const nextSectionTop = nextSectionIndex * window.innerHeight
 
-              smoothScrollTo(0, nextSectionTop, 3000) // Custom smooth scroll
+            smoothScrollTo(0, nextSectionTop, 3000) // Custom smooth scroll
 
-              setTimeout(() => {
-                isScrolling = false
-              }, 3100) // Reset scroll lock
-            },
-            { passive: false }
-          )
+            setTimeout(() => {
+              isScrolling = false
+            }, 3100) // Reset scroll lock
+          }
+
+          // Apply custom scroll behavior only on non-touch devices
+          if (!isTouchDevice()) {
+            document.addEventListener('wheel', handleCustomScroll, { passive: false })
+          }
 
           document.addEventListener('scroll', () => {
             const creditTop = creditStickyWrapper.getBoundingClientRect().bottom
@@ -141,16 +132,24 @@ export default function webgl() {
 
           // Function to calculate the scroll progress
           function calculateScrollProgress() {
-            var docHeight =
-              document.documentElement.scrollHeight -
-              document.documentElement.clientHeight
-            var scrollTop =
-              window.pageYOffset || document.documentElement.scrollTop
+            var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight
+            var scrollTop = window.pageYOffset || document.documentElement.scrollTop
             var scrollProgress = scrollTop / docHeight
-            console.log('Scroll Progress:', scrollProgress)
+            // console.log('Scroll Progress:', scrollProgress)
 
-            // Assuming you have a mixer object that needs to be updated
-            mixer.setTime(scrollProgress * 500)
+            // Update your mixer object here, if applicable
+            let progress = scrollProgress * 10
+            if (scrollProgress <= 0.8) {
+              mixer.setTime(scrollProgress * 500)
+            } else {
+              mixer.setTime(30)
+            }
+
+            if (progress >= 0.5) {
+              dotMaterial.opacity = 0
+            } else {
+              dotMaterial.opacity = 1
+            }
           }
 
           // Add an event listener to the window's scroll event
@@ -165,11 +164,8 @@ export default function webgl() {
             const startTime = new Date().getTime()
 
             const easeInOutQuart = (time, from, distance, duration) => {
-              if ((time /= duration / 2) < 1)
-                return (distance / 2) * time * time * time * time + from
-              return (
-                (-distance / 2) * ((time -= 2) * time * time * time - 2) + from
-              )
+              if ((time /= duration / 2) < 1) return (distance / 2) * time * time * time * time + from
+              return (-distance / 2) * ((time -= 2) * time * time * time - 2) + from
             }
 
             const timer = setInterval(() => {
@@ -187,9 +183,7 @@ export default function webgl() {
         // Progress
         (itemUrl, itemsLoaded, itemsTotal) => {
           const progressRatio = itemsLoaded / itemsTotal
-          document.querySelector('.loader__percent').innerHTML = `${Math.trunc(
-            progressRatio * 100
-          )}%`
+          document.querySelector('.loader__percent').innerHTML = `${Math.trunc(progressRatio * 100)}%`
         }
       )
 
@@ -206,33 +200,23 @@ export default function webgl() {
       /**
        * Textures
        */
-      const bakedFactories = textureLoader.load(
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654eeb27a8b37b4b74ff690d_factories.jpg'
-      )
+      const bakedFactories = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654eeb27a8b37b4b74ff690d_factories.jpg')
       bakedFactories.flipY = false
       bakedFactories.SRGBColorSpace = THREE.SRGBColorSpace
 
-      const bakedTerrain = textureLoader.load(
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654eeb279d533f960e71d81f_terrain.jpg'
-      )
+      const bakedTerrain = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654eeb279d533f960e71d81f_terrain.jpg')
       bakedTerrain.flipY = false
       bakedTerrain.SRGBColorSpace = THREE.SRGBColorSpace
 
-      const bakedTrees = textureLoader.load(
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654eeb28abbb4e421e9670a2_trees.jpg'
-      )
+      const bakedTrees = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654eeb28abbb4e421e9670a2_trees.jpg')
       bakedTrees.flipY = false
       bakedTrees.SRGBColorSpace = THREE.SRGBColorSpace
 
-      const bakedVehicle = textureLoader.load(
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654eeb274d1a59b8875bd45d_vehicle.jpg'
-      )
+      const bakedVehicle = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654eeb274d1a59b8875bd45d_vehicle.jpg')
       bakedVehicle.flipY = false
       bakedVehicle.SRGBColorSpace = THREE.SRGBColorSpace
 
-      const bakedWorld = textureLoader.load(
-        'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/65563440837f48a18638563c_world.jpg'
-      )
+      const bakedWorld = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/65563440837f48a18638563c_world.jpg')
       bakedWorld.flipY = false
       bakedWorld.SRGBColorSpace = THREE.SRGBColorSpace
 
@@ -267,11 +251,9 @@ export default function webgl() {
       const isSmallScreen = window.matchMedia('(max-width: 767px)').matches
 
       if (isSmallScreen) {
-        path =
-          'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654efc9d3557b10a70880c63_export.glb.txt'
+        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654efc9d3557b10a70880c63_export.glb.txt'
       } else {
-        path =
-          'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6551ee8cfd2d256b958bddc6_desktop.glb.txt'
+        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6551ee8cfd2d256b958bddc6_desktop.glb.txt'
       }
 
       gltfLoader.load(path, (gltf) => {
@@ -286,21 +268,11 @@ export default function webgl() {
         scene.add(gltf.scene)
 
         // Get each object
-        const factories = gltf.scene.children.find(
-          (child) => child.name === 'factories'
-        )
-        const terrain = gltf.scene.children.find(
-          (child) => child.name === 'terrain'
-        )
-        const trees = gltf.scene.children.find(
-          (child) => child.name === 'trees'
-        )
-        const vehicle = gltf.scene.children.find(
-          (child) => child.name === 'vehicle'
-        )
-        const world = gltf.scene.children.find(
-          (child) => child.name === 'world'
-        )
+        const factories = gltf.scene.children.find((child) => child.name === 'factories')
+        const terrain = gltf.scene.children.find((child) => child.name === 'terrain')
+        const trees = gltf.scene.children.find((child) => child.name === 'trees')
+        const vehicle = gltf.scene.children.find((child) => child.name === 'vehicle')
+        const world = gltf.scene.children.find((child) => child.name === 'world')
 
         // Apply materials
         factories.material = factoriesMaterial
@@ -453,10 +425,8 @@ export default function webgl() {
 
         // Apply a smoothing effect to the rotation and movement
         if (modelGroup) {
-          modelGroup.rotation.y +=
-            0.015 * (targetRotationY - modelGroup.rotation.y)
-          modelGroup.rotation.x +=
-            0.015 * (targetRotationX - modelGroup.rotation.x)
+          modelGroup.rotation.y += 0.015 * (targetRotationY - modelGroup.rotation.y)
+          modelGroup.rotation.x += 0.015 * (targetRotationX - modelGroup.rotation.x)
         }
 
         // Update mixer
