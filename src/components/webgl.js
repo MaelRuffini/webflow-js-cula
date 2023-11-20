@@ -6,23 +6,30 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
 export default function webgl() {
-  // Lenis scroll
-  const lenis = new Lenis({
-    smoothTouch: true
-  })
-
-  function raf(time) {
-    lenis.raf(time)
-    requestAnimationFrame(raf)
+  // Add this at the top of your script
+  window.onbeforeunload = function () {
+    window.scrollTo(0, 0)
   }
 
-  requestAnimationFrame(raf)
+  // Your existing code...
 
-  lenis.scrollTo('top', { immediate: true })
+  // Lenis scroll
+  // const lenis = new Lenis({
+  //   smoothTouch: true
+  // })
 
-  document.querySelector('.dots__dots-next').addEventListener('click', () => {
-    lenis.scrollTo('.technology__wrapper')
-  })
+  // function raf(time) {
+  //   lenis.raf(time)
+  //   requestAnimationFrame(raf)
+  // }
+
+  // requestAnimationFrame(raf)
+
+  // lenis.scrollTo('top', { immediate: true })
+
+  // document.querySelector('.dots__dots-next').addEventListener('click', () => {
+  //   lenis.scrollTo('.technology__wrapper')
+  // })
 
   let mm = gsap.matchMedia(),
     breakPoint = 768
@@ -73,20 +80,108 @@ export default function webgl() {
           blenderCamera.aspect = sizes.width / sizes.height
           blenderCamera.updateProjectionMatrix()
 
-          lenis.on('scroll', (e) => {
-            let progress = lenis.progress * 10
-            if (lenis.progress <= 0.8) {
-              mixer.setTime(lenis.progress * 500)
-            } else {
-              mixer.setTime(30)
+          // lenis.on('scroll', (e) => {
+          //   let progress = lenis.progress * 10
+          //   if (lenis.progress <= 0.8) {
+          //     mixer.setTime(lenis.progress * 500)
+          //   } else {
+          //     mixer.setTime(30)
+          //   }
+
+          //   if(progress >= 0.5){
+          //     dotMaterial.opacity = 0
+          //   } else{
+          //     dotMaterial.opacity = 1
+          //   }
+          // })
+
+          const sections = document.querySelectorAll('section')
+          const totalSections = sections.length
+          let isScrolling = false
+
+          const creditStickyWrapper = document.querySelector('.credit-scroll__wrapper')
+          let normalScroll = false
+
+          document.addEventListener(
+            'wheel',
+            (event) => {
+              if (normalScroll) return
+
+              event.preventDefault() // Prevent the default scroll
+
+              if (isScrolling) return
+              isScrolling = true
+
+              const delta = event.wheelDelta || -event.deltaY
+              const currentSectionIndex = Math.round(
+                window.scrollY / window.innerHeight
+              )
+              let nextSectionIndex =
+                delta > 0 ? currentSectionIndex - 1 : currentSectionIndex + 1
+
+              nextSectionIndex = Math.max(
+                0,
+                Math.min(nextSectionIndex, totalSections - 1)
+              )
+              const nextSectionTop = nextSectionIndex * window.innerHeight
+
+              smoothScrollTo(0, nextSectionTop, 3000) // Custom smooth scroll
+
+              setTimeout(() => {
+                isScrolling = false
+              }, 3100) // Reset scroll lock
+            },
+            { passive: false }
+          )
+
+          document.addEventListener('scroll', () => {
+            const creditTop = creditStickyWrapper.getBoundingClientRect().bottom
+            normalScroll = creditTop <= window.innerHeight
+          })
+
+          // Function to calculate the scroll progress
+          function calculateScrollProgress() {
+            var docHeight =
+              document.documentElement.scrollHeight -
+              document.documentElement.clientHeight
+            var scrollTop =
+              window.pageYOffset || document.documentElement.scrollTop
+            var scrollProgress = scrollTop / docHeight
+            console.log('Scroll Progress:', scrollProgress)
+
+            // Assuming you have a mixer object that needs to be updated
+            mixer.setTime(scrollProgress * 500)
+          }
+
+          // Add an event listener to the window's scroll event
+          window.addEventListener('scroll', calculateScrollProgress)
+
+          // Smooth scroll function
+          function smoothScrollTo(endX, endY, duration) {
+            const startX = window.scrollX || window.pageXOffset
+            const startY = window.scrollY || window.pageYOffset
+            const distanceX = endX - startX
+            const distanceY = endY - startY
+            const startTime = new Date().getTime()
+
+            const easeInOutQuart = (time, from, distance, duration) => {
+              if ((time /= duration / 2) < 1)
+                return (distance / 2) * time * time * time * time + from
+              return (
+                (-distance / 2) * ((time -= 2) * time * time * time - 2) + from
+              )
             }
 
-            if(progress >= 0.5){
-              dotMaterial.opacity = 0
-            } else{
-              dotMaterial.opacity = 1
-            }
-          })
+            const timer = setInterval(() => {
+              const time = new Date().getTime() - startTime
+              const newX = easeInOutQuart(time, startX, distanceX, duration)
+              const newY = easeInOutQuart(time, startY, distanceY, duration)
+              if (time >= duration) {
+                clearInterval(timer)
+              }
+              window.scrollTo(newX, newY)
+            }, 1000 / 60) // 60 fps
+          }
         },
 
         // Progress
@@ -147,12 +242,18 @@ export default function webgl() {
       // Baked material
       // const envMapIntensity = 1.8
 
-      const factoriesMaterial = new THREE.MeshBasicMaterial({ map: bakedFactories })
+      const factoriesMaterial = new THREE.MeshBasicMaterial({
+        map: bakedFactories,
+      })
       const terrainMaterial = new THREE.MeshBasicMaterial({ map: bakedTerrain })
       const treesMaterial = new THREE.MeshBasicMaterial({ map: bakedTrees })
       const vehicleMaterial = new THREE.MeshBasicMaterial({ map: bakedVehicle })
       const worldMaterial = new THREE.MeshBasicMaterial({ map: bakedWorld })
-      const dotMaterial = new THREE.MeshBasicMaterial({ color: "#57EEA6", transparent: true, opacity: 1 })
+      const dotMaterial = new THREE.MeshBasicMaterial({
+        color: '#57EEA6',
+        transparent: true,
+        opacity: 1,
+      })
 
       /**
        * Model
@@ -163,58 +264,55 @@ export default function webgl() {
       let clouds
       let path
 
-        const isSmallScreen = window.matchMedia('(max-width: 767px)').matches
-      
-        if (isSmallScreen) {
-          path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654efc9d3557b10a70880c63_export.glb.txt'
-        } else {
-          path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6551ee8cfd2d256b958bddc6_desktop.glb.txt'
-        }
+      const isSmallScreen = window.matchMedia('(max-width: 767px)').matches
 
-      gltfLoader.load(
-        path,
-        (gltf) => {
-          mixer = new THREE.AnimationMixer(gltf.scene)
-          const action = mixer.clipAction(gltf.animations[0])
+      if (isSmallScreen) {
+        path =
+          'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654efc9d3557b10a70880c63_export.glb.txt'
+      } else {
+        path =
+          'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6551ee8cfd2d256b958bddc6_desktop.glb.txt'
+      }
 
-          action.play()
+      gltfLoader.load(path, (gltf) => {
+        mixer = new THREE.AnimationMixer(gltf.scene)
+        const action = mixer.clipAction(gltf.animations[0])
 
-          blenderCamera = gltf.cameras['0']
-          blenderCamera.aspect = sizes.width / sizes.height
+        action.play()
 
-          scene.add(gltf.scene)
+        blenderCamera = gltf.cameras['0']
+        blenderCamera.aspect = sizes.width / sizes.height
 
-          // Get each object
-          const factories = gltf.scene.children.find(
-            (child) => child.name === 'factories'
-          )
-          const terrain = gltf.scene.children.find(
-            (child) => child.name === 'terrain'
-          )
-          const trees = gltf.scene.children.find(
-            (child) => child.name === 'trees'
-          )
-          const vehicle = gltf.scene.children.find(
-            (child) => child.name === 'vehicle'
-          )
-          const world = gltf.scene.children.find(
-            (child) => child.name === 'world'
-          )
+        scene.add(gltf.scene)
 
-          // Apply materials
-          factories.material = factoriesMaterial
-          terrain.material = terrainMaterial
-          trees.material = treesMaterial
-          vehicle.material = vehicleMaterial
-          world.material = worldMaterial
+        // Get each object
+        const factories = gltf.scene.children.find(
+          (child) => child.name === 'factories'
+        )
+        const terrain = gltf.scene.children.find(
+          (child) => child.name === 'terrain'
+        )
+        const trees = gltf.scene.children.find(
+          (child) => child.name === 'trees'
+        )
+        const vehicle = gltf.scene.children.find(
+          (child) => child.name === 'vehicle'
+        )
+        const world = gltf.scene.children.find(
+          (child) => child.name === 'world'
+        )
 
-          modelGroup = new THREE.Group()
-          modelGroup.add(factories, terrain, trees, vehicle, world)
-          scene.add(gltf.scene, modelGroup)
-        }
-      )
+        // Apply materials
+        factories.material = factoriesMaterial
+        terrain.material = terrainMaterial
+        trees.material = treesMaterial
+        vehicle.material = vehicleMaterial
+        world.material = worldMaterial
 
-      
+        modelGroup = new THREE.Group()
+        modelGroup.add(factories, terrain, trees, vehicle, world)
+        scene.add(gltf.scene, modelGroup)
+      })
 
       const dotOneGeometry = new THREE.CircleGeometry(0.3, 32)
       const dotOne = new THREE.Mesh(dotOneGeometry, dotMaterial)
@@ -251,7 +349,6 @@ export default function webgl() {
       dotFive.position.set(16.39, -15.68, 10.52)
       dotSix.position.set(-18.42, -20.37, -13.73)
       dotSeven.position.set(-16.85, -30, 8.96)
-    
 
       scene.add(dotOne, dotTwo, dotThree, dotFour, dotFive, dotSix, dotSeven)
 
@@ -356,8 +453,10 @@ export default function webgl() {
 
         // Apply a smoothing effect to the rotation and movement
         if (modelGroup) {
-          modelGroup.rotation.y += 0.015 * (targetRotationY - modelGroup.rotation.y)
-          modelGroup.rotation.x += 0.015 * (targetRotationX - modelGroup.rotation.x)
+          modelGroup.rotation.y +=
+            0.015 * (targetRotationY - modelGroup.rotation.y)
+          modelGroup.rotation.x +=
+            0.015 * (targetRotationX - modelGroup.rotation.x)
         }
 
         // Update mixer

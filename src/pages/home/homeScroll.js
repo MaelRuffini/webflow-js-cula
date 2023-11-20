@@ -160,29 +160,24 @@ export default function homeScroll() {
       let toggleWrappers = document.querySelectorAll('.technology__card-toggle')
 
       function technologyToggle(item, index) {
-        let toggleTl = gsap
-          .timeline({
+        let toggleTl = gsap.timeline({
             scrollTrigger: {
               trigger: item,
-              start: 'top top',
+              start: 'top 10px',
+              end: 'top -10px',
               toggleActions: 'play reverse play reverse',
-            },
+            }
           })
-          .to(
-            toggleWrappers[index],
-            {
+          .to(toggleWrappers[index], {
               height: 'auto',
               duration: 0.8,
               ease: 'Quart.easeInOut',
-            },
-            0
-          )
+            }, 0 )
 
-        let dataTl = gsap
-          .timeline({
+        let dataTl = gsap.timeline({
             scrollTrigger: {
               trigger: item,
-              start: 'top top',
+              start: 'top 10',
               ease: 'Quart.easeInOut',
             },
           })
@@ -252,7 +247,7 @@ export default function homeScroll() {
         stagger: 0.2,
         scrollTrigger: {
           trigger: '.dots__wrapper',
-          start: 'top top',
+          start: 'top 5%',
         },
       })
 
@@ -262,7 +257,7 @@ export default function homeScroll() {
         delay: 0.4,
         scrollTrigger: {
           trigger: '.dots__wrapper',
-          start: 'top top',
+          start: 'top 5%',
         },
       })
 
@@ -276,8 +271,8 @@ export default function homeScroll() {
           stagger: 0.2,
           scrollTrigger: {
             trigger: item,
-            start: 'top top',
-            toggleActions: 'play none none reverse'
+            start: 'top 5%',
+            toggleActions: 'play none none reverse',
           },
         })
 
@@ -287,7 +282,7 @@ export default function homeScroll() {
           stagger: 0.2,
           scrollTrigger: {
             trigger: item,
-            start: 'top top',
+            start: 'top 5%',
             toggleActions: 'play none none reverse'
           },
         })
