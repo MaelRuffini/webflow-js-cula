@@ -10,22 +10,6 @@ export default function webgl() {
     window.scrollTo(0, 0)
   }
 
-  // Your existing code...
-
-  // Lenis scroll
-  // const lenis = new Lenis({
-  //   smoothTouch: true
-  // })
-
-  // function raf(time) {
-  //   lenis.raf(time)
-  //   requestAnimationFrame(raf)
-  // }
-
-  // requestAnimationFrame(raf)
-
-  // lenis.scrollTo('top', { immediate: true })
-
   document.querySelector('.dots__dots-next').addEventListener('click', () => {
     window.scrollBy({
       top: window.innerHeight,
@@ -48,12 +32,6 @@ export default function webgl() {
       /**
        * Base
        */
-      // Debug
-      // const debugObject = {}
-      // const gui = new dat.GUI({
-      //   width: 400,
-      // })
-
       // Canvas
       const canvas = document.querySelector('canvas.webgl')
 
@@ -135,14 +113,14 @@ export default function webgl() {
             var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight
             var scrollTop = window.pageYOffset || document.documentElement.scrollTop
             var scrollProgress = scrollTop / docHeight
-            // console.log('Scroll Progress:', scrollProgress)
 
             // Update your mixer object here, if applicable
             let progress = scrollProgress * 10
+            console.log(progress.toFixed(2))
             if (scrollProgress <= 0.8) {
               mixer.setTime(scrollProgress * 500)
             } else {
-              mixer.setTime(30)
+              mixer.setTime(50)
             }
 
             if (progress >= 0.5) {
@@ -253,7 +231,7 @@ export default function webgl() {
       if (isSmallScreen) {
         path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654efc9d3557b10a70880c63_export.glb.txt'
       } else {
-        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6551ee8cfd2d256b958bddc6_desktop.glb.txt'
+        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/655c424743f3726e7138d58b_desktop.glb.txt'
       }
 
       gltfLoader.load(path, (gltf) => {
@@ -326,25 +304,34 @@ export default function webgl() {
 
       let arr = [dotOne, dotTwo, dotThree, dotFour, dotFive, dotSix, dotSeven]
 
-      // arr.forEach(item => {
-      //   let delay = Math.random() * 10
-      //   let dotTl = gsap.timeline({ repeat: -1 })
-      //   .to(item.scale, {
-      //     x: 1.5,
-      //     y: 1.5,
-      //     z: 1.5,
-      //     ease: 'Quart.easeInOut',
-      //     duration: 1.6,
-      //     delay: delay
-      //   })
-      //   .to(item.scale, {
-      //     x: 0.5,
-      //     y: 0.5,
-      //     z: 0.5,
-      //     ease: 'Quart.easeInOut',
-      //     duration: 0.8,
-      //   })
-      // })
+      arr.forEach((item) => {
+        let delay = Math.random() * 10
+        let dotTl = gsap
+          .timeline({ repeat: -1 })
+          .fromTo(
+            item.scale,
+            {
+              x: 0.5,
+              y: 0.5,
+              z: 0.5,
+            },
+            {
+              x: 1.5,
+              y: 1.5,
+              z: 1.5,
+              ease: 'Quart.easeInOut',
+              duration: 1.6,
+              // delay: delay,
+            }
+          )
+          .to(item.scale, {
+            x: 0.5,
+            y: 0.5,
+            z: 0.5,
+            ease: 'Quart.easeInOut',
+            duration: 0.8,
+          })
+      })
 
       /**
        * Sizes

@@ -40,16 +40,16 @@ export default function homeScroll() {
           0.6
         )
 
-        gsap.to('.hero__scroll-wrapper', {
-          opacity: 0,
-          duration: 0.8,
-          ease: 'Quart.easeInOut',
-          scrollTrigger:{
-            trigger: '.hero__wrapper',
-            start: 'top -10',
-            toggleActions: 'play none none reverse'
-          }
-        })
+      gsap.to('.hero__scroll-wrapper', {
+        opacity: 0,
+        duration: 0.8,
+        ease: 'Quart.easeInOut',
+        scrollTrigger: {
+          trigger: '.hero__wrapper',
+          start: 'top -10',
+          toggleActions: 'play none none reverse',
+        },
+      })
 
       // gsap.from('.canvas__wrapper', {
       //   y: isDesktop ? '15rem' : 0,
@@ -74,7 +74,8 @@ export default function homeScroll() {
 
       // Credit text animation
 
-      let creditTl = gsap.timeline({
+      let creditTl = gsap
+        .timeline({
           scrollTrigger: {
             trigger: '.credit__sticky-wrapper',
             start: '80% bottom',
@@ -160,21 +161,27 @@ export default function homeScroll() {
       let toggleWrappers = document.querySelectorAll('.technology__card-toggle')
 
       function technologyToggle(item, index) {
-        let toggleTl = gsap.timeline({
+        let toggleTl = gsap
+          .timeline({
             scrollTrigger: {
               trigger: item,
               start: 'top 10px',
               end: 'top -10px',
               toggleActions: 'play reverse play reverse',
-            }
+            },
           })
-          .to(toggleWrappers[index], {
+          .to(
+            toggleWrappers[index],
+            {
               height: 'auto',
               duration: 0.8,
               ease: 'Quart.easeInOut',
-            }, 0 )
+            },
+            0
+          )
 
-        let dataTl = gsap.timeline({
+        let dataTl = gsap
+          .timeline({
             scrollTrigger: {
               trigger: item,
               start: 'top 10',
@@ -222,23 +229,21 @@ export default function homeScroll() {
         opacity: 0,
         duration: 0.2,
         ease: 'Quart.easeInOut',
-        scrollTrigger:{
+        scrollTrigger: {
           trigger: '.button__wrapper--technology',
           start: 'center 85%',
-          toggleActions: 'play none none reverse'
-        }
+          toggleActions: 'play none none reverse',
+        },
       })
 
       let dots = document.querySelectorAll('.technology__dot')
 
       dots.forEach((item) => {
-        let pulseTl = gsap
-          .timeline({ repeat: -1 })
-          .from(item.querySelector('.technology__dot-outer'), {
-            scale: 0,
-            duration: 1.5,
-            ease: 'easeIn',
-          })
+        let pulseTl = gsap.timeline({ repeat: -1 }).from(item.querySelector('.technology__dot-outer'), {
+          scale: 0,
+          duration: 1.5,
+          ease: 'easeIn',
+        })
       })
 
       gsap.from('.dots__dots-wrapper', {
@@ -263,7 +268,6 @@ export default function homeScroll() {
 
       let technologyWrapper = document.querySelectorAll('.c-tecnology__wrapper')
       technologyWrapper.forEach((item) => {
-
         gsap.from(item.querySelectorAll('.technology__item-content'), {
           xPercent: -100,
           opacity: 0,
@@ -283,12 +287,9 @@ export default function homeScroll() {
           scrollTrigger: {
             trigger: item,
             start: 'top 5%',
-            toggleActions: 'play none none reverse'
+            toggleActions: 'play none none reverse',
           },
         })
-
-
-
       })
 
       // Card center animation
@@ -307,8 +308,8 @@ export default function homeScroll() {
 
         // Create the animation
         gsap.to(card, {
-          y: centerY,
-          x: centerX,
+          y: isDesktop ? centerY : 0,
+          x: isDesktop ? centerX : 0,
           onStart: function () {
             cardWrapper.style.overflow = 'visible'
             cardWrapper.style.overscrollBehavior = 'none'
@@ -323,7 +324,6 @@ export default function homeScroll() {
           },
         })
 
-
         // gsap.to('.technology__sticky', {
         //   y: '80vh',
         //   ease: 'none',
@@ -335,20 +335,25 @@ export default function homeScroll() {
         //   }
         // })
 
-        let borderTl = gsap.timeline({
-          scrollTrigger:{
-            trigger: '.credit-scroll__wrapper',
-            start: 'center center',
-            end: 'bottom bottom',
-            scrub: true,
-            invalidateOnRefresh: true,
-            id: 'borderTl',
-          }
-        })
-        .to('.credit__overlay', {
-          borderWidth: isDesktop ? '40em 55em' : '0px',
-          ease: 'none',
-        }, 0)
+        let borderTl = gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: '.credit-scroll__wrapper',
+              start: 'center center',
+              end: 'bottom bottom',
+              scrub: true,
+              invalidateOnRefresh: true,
+              id: 'borderTl',
+            },
+          })
+          .to(
+            '.credit__overlay',
+            {
+              borderWidth: isDesktop ? '40em 55em' : '0px',
+              ease: 'none',
+            },
+            0
+          )
 
         gsap.to('.technology__card-footer', {
           height: 'auto',
@@ -386,7 +391,8 @@ export default function homeScroll() {
         setCenteringAnimation()
       })
 
-      let webglTl = gsap.timeline({
+      let webglTl = gsap
+        .timeline({
           scrollTrigger: {
             trigger: triggerSection,
             start: 'center center',
@@ -439,7 +445,8 @@ export default function homeScroll() {
           duration: 0,
         })
 
-      let rotationTl = gsap.timeline({
+      let rotationTl = gsap
+        .timeline({
           scrollTrigger: {
             trigger: '.credit__sticky-wrapper',
             start: 'top top',
@@ -447,10 +454,14 @@ export default function homeScroll() {
             scrub: true,
           },
         })
-        .to('.credit__text-animation', {
+        .to(
+          '.credit__text-animation',
+          {
             x: '-200vw',
             ease: 'none',
-          }, 0.5)
-        }
+          },
+          0.5
+        )
+    }
   )
 }
