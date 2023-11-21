@@ -229,9 +229,9 @@ export default function webgl() {
       const isSmallScreen = window.matchMedia('(max-width: 767px)').matches
 
       if (isSmallScreen) {
-        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654efc9d3557b10a70880c63_export.glb.txt'
+        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/655c8d6d9ef8fa4ef58dd07d_mobile.glb.txt'
       } else {
-        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/655c424743f3726e7138d58b_desktop.glb.txt'
+        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/655c8af729d174cb08fbb40e_modelDesktop.glb.txt'
       }
 
       gltfLoader.load(path, (gltf) => {
