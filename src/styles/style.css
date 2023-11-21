@@ -1,5 +1,8 @@
 body {
   overscroll-behavior: none;
+}
+
+.main {
   overflow: clip;
 }
 
