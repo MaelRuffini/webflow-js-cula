@@ -8,31 +8,23 @@ import homePannel from './pages/home/homePannel'
 import header from './components/header'
 import webgl from './components/webgl'
 
-function refreshPage() {
-  window.location.reload()
+let previousState768 = window.matchMedia('(max-width: 768px)').matches
+let previousState991 = window.matchMedia('(max-width: 991px)').matches
+
+function checkBreakpointChange() {
+  const currentState768 = window.matchMedia('(max-width: 768px)').matches
+  const currentState991 = window.matchMedia('(max-width: 991px)').matches
+
+  if (currentState768 !== previousState768 || currentState991 !== previousState991) {
+    console.log('Crossed a breakpoint, refreshing page...')
+    window.location.reload()
+  }
+
+  previousState768 = currentState768
+  previousState991 = currentState991
 }
 
-const mediaQuery768 = window.matchMedia('(max-width: 768px)')
-const mediaQuery991 = window.matchMedia('(max-width: 991px)')
-
-function setupBreakpointListeners() {
-  mediaQuery768.addEventListener((e) => {
-    if (e.matches) {
-      console.log('Viewport is now under 768px, refreshing page...')
-      refreshPage()
-    }
-  })
-
-  mediaQuery991.addEventListener((e) => {
-    if (e.matches) {
-      console.log('Viewport is now under 991px, refreshing page...')
-      refreshPage()
-    }
-  })
-}
-
-// Initial setup
-setupBreakpointListeners()
+window.addEventListener('resize', checkBreakpointChange)
 
 if (window.matchMedia('(max-width: 991px)').matches) {
   const lenis = new Lenis({
