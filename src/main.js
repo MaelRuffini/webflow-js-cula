@@ -9,7 +9,9 @@ import header from './components/header'
 import webgl from './components/webgl'
 
 if (window.matchMedia('(max-width: 991px)').matches) {
-  const lenis = new Lenis()
+  const lenis = new Lenis({
+    smoothTouch: true,
+  })
 
   function raf(time) {
     lenis.raf(time)
