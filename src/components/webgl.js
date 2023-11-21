@@ -116,7 +116,7 @@ export default function webgl() {
 
             // Update your mixer object here, if applicable
             let progress = scrollProgress * 10
-            console.log(progress.toFixed(2))
+            // console.log(progress.toFixed(2))
             if (scrollProgress <= 0.8) {
               mixer.setTime(scrollProgress * 500)
             } else {

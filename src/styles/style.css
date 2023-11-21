@@ -6,6 +6,26 @@ body {
   overflow: clip;
 }
 
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
 .link__wrapper:hover .link__text-wrapper,
 .link__wrapper:hover .link__arrow-wrapper {
   background-color: #29364b;
