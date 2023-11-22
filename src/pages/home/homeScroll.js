@@ -297,14 +297,15 @@ export default function homeScroll() {
       const cardWrapper = document.querySelector('.technology__sticky')
       const triggerSection = document.querySelector('.credit-scroll__wrapper')
 
+      // Calculate the positions to center the card on the screen
+      let centerY = window.innerHeight / 2 - card.offsetHeight / 2 - 32
+      let rect = card.getBoundingClientRect()
+      let centerX = (window.innerWidth - rect.width) / 2 - rect.left
+
       // Function to calculate and set the centering animation
       function setCenteringAnimation() {
         ScrollTrigger.getById('mainAnimation')?.kill()
         ScrollTrigger.getById('onLeaveBackAnimation')?.kill()
-        // Calculate the positions to center the card on the screen
-        const centerY = window.innerHeight / 2 - card.offsetHeight / 2 - 32
-        const rect = card.getBoundingClientRect()
-        const centerX = (window.innerWidth - rect.width) / 2 - rect.left
 
         // Create the animation
         gsap.to(card, {
@@ -323,17 +324,6 @@ export default function homeScroll() {
             scrub: true, // Smooth scrubbing
           },
         })
-
-        // gsap.to('.technology__sticky', {
-        //   y: '80vh',
-        //   ease: 'none',
-        //   scrollTrigger:{
-        //     trigger: '.credit__wrapper',
-        //     start: 'top bottom',
-        //     end: 'top top',
-        //     scrub: true
-        //   }
-        // })
 
         let borderTl = gsap
           .timeline({
@@ -388,6 +378,11 @@ export default function homeScroll() {
         ScrollTrigger.getById('centerCardTrigger')?.kill()
         ScrollTrigger.getById('borderTl')?.kill()
         // Call the function again to reset the animation with new values
+
+        centerY = window.innerHeight / 2 - card.offsetHeight / 2 - 32
+        rect = card.getBoundingClientRect()
+        centerX = (window.innerWidth - rect.width) / 2 - rect.left
+
         setCenteringAnimation()
       })
 

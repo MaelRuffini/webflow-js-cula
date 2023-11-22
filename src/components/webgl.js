@@ -1,9 +1,14 @@
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/all'
+import { Observer } from 'gsap/all'
+import { ScrollToPlugin } from 'gsap/all'
 import Lenis from '@studio-freight/lenis'
 import * as dat from 'lil-gui'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+
+gsap.registerPlugin(ScrollTrigger, Observer, ScrollToPlugin)
 
 export default function webgl() {
   window.onbeforeunload = function () {
@@ -34,6 +39,26 @@ export default function webgl() {
        */
       // Canvas
       const canvas = document.querySelector('canvas.webgl')
+
+      const isSmallScreen = window.matchMedia('(max-width: 767px)').matches
+
+      let viewportHeight = window.innerHeight
+      let mixerEnd
+      let path
+      let height
+      let scrollTarget
+
+      if (isSmallScreen) {
+        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/655d6e16d85dfa7bc68038fb_mobile-exp.glb.txt'
+        mixerEnd = 1.25
+        height = document.documentElement.scrollHeight / viewportHeight
+        scrollTarget = 0.8
+      } else {
+        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/655d8e1f860ea7a33cefa303_exp-desktop.glb.txt'
+        mixerEnd = 5
+        height = 13
+        scrollTarget = 1
+      }
 
       // Scene
       const scene = new THREE.Scene()
@@ -95,7 +120,7 @@ export default function webgl() {
 
             setTimeout(() => {
               isScrolling = false
-            }, 3100) // Reset scroll lock
+            }, 3000) // Reset scroll lock
           }
 
           // Apply custom scroll behavior only on non-touch devices
@@ -108,19 +133,54 @@ export default function webgl() {
             normalScroll = creditTop <= window.innerHeight
           })
 
-          // Function to calculate the scroll progress
+          // Add an event listener to the window's scroll event
+          window.addEventListener('scroll', calculateScrollProgress)
+
+          // Smooth scroll function
+          function smoothScrollTo(endX, endY, duration) {
+            const startX = window.scrollX
+            const startY = window.scrollY
+            const distanceX = endX - startX
+            const distanceY = endY - startY
+            const startTime = new Date().getTime()
+
+            const easeInOutQuart = (time, from, distance, duration) => {
+              if ((time /= duration / 2) < 1) return (distance / 2) * time * time * time * time + from
+              return (-distance / 2) * ((time -= 2) * time * time * time - 2) + from
+            }
+
+            const timer = setInterval(() => {
+              const time = new Date().getTime() - startTime
+              const newX = easeInOutQuart(time, startX, distanceX, duration)
+              const newY = easeInOutQuart(time, startY, distanceY, duration)
+              if (time >= duration) {
+                clearInterval(timer)
+                window.scrollTo(newX, newY) // Ensure final position is set correctly
+              } else {
+                window.scrollTo(newX, newY)
+              }
+            }, 1000 / 60) // 60 fps
+          }
+
+          // Function to calculate the scroll progress (ensure to define mixer and dotMaterial)
           function calculateScrollProgress() {
-            var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight
-            var scrollTop = window.pageYOffset || document.documentElement.scrollTop
-            var scrollProgress = scrollTop / docHeight
+            viewportHeight = window.innerHeight
+            var targetHeight = viewportHeight * height // height = 1300vh = 13 times the viewport height
+            var scrollTop = window.scrollY || document.documentElement.scrollTop
+            var scrollProgress = scrollTop / targetHeight
+
+            // // Ensuring that the scroll progress does not exceed 1
+            // if (scrollProgress > 1) {
+            //   scrollProgress = 1
+            // }
 
             // Update your mixer object here, if applicable
             let progress = scrollProgress * 10
-            // console.log(progress.toFixed(2))
-            if (scrollProgress <= 0.8) {
+            // console.log(scrollProgress.toFixed(2))
+            if (scrollProgress <= scrollTarget) {
               mixer.setTime(scrollProgress * 40)
             } else {
-              mixer.setTime(50)
+              mixer.setTime(mixerEnd)
             }
 
             if (progress >= 0.5) {
@@ -135,8 +195,8 @@ export default function webgl() {
 
           // Smooth scroll function
           function smoothScrollTo(endX, endY, duration) {
-            const startX = window.scrollX || window.pageXOffset
-            const startY = window.scrollY || window.pageYOffset
+            const startX = window.scrollX || window.scrollX
+            const startY = window.scrollY || window.scrollY
             const distanceX = endX - startX
             const distanceY = endY - startY
             const startTime = new Date().getTime()
@@ -224,15 +284,6 @@ export default function webgl() {
       let blenderCamera
       let mixer
       let clouds
-      let path
-
-      const isSmallScreen = window.matchMedia('(max-width: 767px)').matches
-
-      if (isSmallScreen) {
-        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/655c8d6d9ef8fa4ef58dd07d_mobile.glb.txt'
-      } else {
-        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/655cbc03a015fdce9a4367ec_desk.glb.txt'
-      }
 
       gltfLoader.load(path, (gltf) => {
         mixer = new THREE.AnimationMixer(gltf.scene)
