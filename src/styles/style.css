@@ -6,6 +6,10 @@ body {
   overflow: clip;
 }
 
+.loading__bar {
+  transition: transform 0.5s;
+}
+
 html.lenis {
   height: auto;
 }

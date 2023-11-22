@@ -67,6 +67,8 @@ export default function webgl() {
        * Loaders
        */
       // Loader manager
+      const loadingBarElement = document.querySelector('.loader__bar')
+
       const loadingManager = new THREE.LoadingManager(
         // Loaded
         () => {
@@ -222,6 +224,7 @@ export default function webgl() {
         (itemUrl, itemsLoaded, itemsTotal) => {
           const progressRatio = itemsLoaded / itemsTotal
           document.querySelector('.loader__percent').innerHTML = `${Math.trunc(progressRatio * 100)}%`
+          loadingBarElement.style.transform = `scaleX(${progressRatio})`
         }
       )
 
