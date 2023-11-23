@@ -54,7 +54,7 @@ export default function webgl() {
         height = document.documentElement.scrollHeight / viewportHeight
         scrollTarget = 0.8
       } else {
-        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/655d8e1f860ea7a33cefa303_exp-desktop.glb.txt'
+        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/655ec18e5f87a83e5dbc31eb_dexp.glb.txt'
         mixerEnd = 5
         height = 13
         scrollTarget = 1
@@ -178,7 +178,7 @@ export default function webgl() {
 
             // Update your mixer object here, if applicable
             let progress = scrollProgress * 10
-            // console.log(scrollProgress.toFixed(2))
+            console.log(progress.toFixed(2))
             if (scrollProgress <= scrollTarget) {
               mixer.setTime(scrollProgress * 40)
             } else {
