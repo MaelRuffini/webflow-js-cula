@@ -49,12 +49,12 @@ export default function webgl() {
       let scrollTarget
 
       if (isSmallScreen) {
-        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/655d6e16d85dfa7bc68038fb_mobile-exp.glb.txt'
+        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/656605897d3f1c1d75e57142_export-mobile.glb.txt'
         mixerEnd = 1.25
         height = document.documentElement.scrollHeight / viewportHeight
         scrollTarget = 0.8
       } else {
-        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/655ec18e5f87a83e5dbc31eb_dexp.glb.txt'
+        path = 'https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/6566059bad11a94a6291a102_export-desktop.glb.txt'
         mixerEnd = 5
         height = 13
         scrollTarget = 1
