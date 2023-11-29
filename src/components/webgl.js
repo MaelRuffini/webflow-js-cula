@@ -245,7 +245,7 @@ export default function webgl() {
       bakedFactories.flipY = false
       bakedFactories.SRGBColorSpace = THREE.SRGBColorSpace
 
-      const bakedTerrain = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/654eeb279d533f960e71d81f_terrain.jpg')
+      const bakedTerrain = textureLoader.load('https://uploads-ssl.webflow.com/651309ab2c6e146a99437841/656708c8dc2e3d05781bf4b3_terrain.jpg')
       bakedTerrain.flipY = false
       bakedTerrain.SRGBColorSpace = THREE.SRGBColorSpace
 
