@@ -74,8 +74,8 @@ document.querySelector('.scroll-button--down').addEventListener('click', () => {
 })
 
 document.querySelector('.scroll-button--up').addEventListener('click', () => {
-  window.scrollBy({
-    top: -window.innerHeight, // This scrolls down by one viewport height. Adjust as necessary.
+  window.scrollTo({
+    top: 0,
     left: 0,
     behavior: 'smooth',
   })
