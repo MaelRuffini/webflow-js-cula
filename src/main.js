@@ -52,3 +52,31 @@ const isUtils = document.querySelector('body').classList.contains('body--utils')
 if (isUtils) {
   header()
 }
+
+let buyerBtn = document.querySelector('.footer__link--buyer')
+let supplierBtn = document.querySelector('.footer__link--supplier')
+let buyerPopUp = document.querySelector('.button-buyer')
+let supplierPopUp = document.querySelector('.button-supplier')
+
+buyerBtn.addEventListener('click', () => {
+  buyerPopUp.click()
+})
+supplierBtn.addEventListener('click', () => {
+  supplierPopUp.click()
+})
+
+document.querySelector('.scroll-button--down').addEventListener('click', () => {
+  window.scrollBy({
+    top: window.innerHeight, // This scrolls down by one viewport height. Adjust as necessary.
+    left: 0,
+    behavior: 'smooth',
+  })
+})
+
+document.querySelector('.scroll-button--up').addEventListener('click', () => {
+  window.scrollBy({
+    top: -window.innerHeight, // This scrolls down by one viewport height. Adjust as necessary.
+    left: 0,
+    behavior: 'smooth',
+  })
+})
